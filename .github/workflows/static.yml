@@ -1,70 +1,60 @@
-# Simple workflow for deploying static content to Pages
 name: Deploy static content to Pages
 
 on:
-  # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
-  # Single deploy job since we're just deploying
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      # Step 1: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
-      
-      - name: Setup Node
+
+      # Step 2: Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 22
           cache: 'npm'
 
-      # Install dependencies
+      # Step 3: Navigate to static_server and install dependencies
       - name: Install dependencies
-        working-directory: static_server
         run: |
-          if [ ! -f package-lock.json ]; then
-            echo "package-lock.json is missing; running npm install instead of npm ci"
-            npm install
-          else
-            npm ci
-          fi
+          cd static_server
+          npm ci
 
-      # Build the project
+      # Step 4: Build the project
       - name: Build the project
-        working-directory: static_server
-        run: npm run build # Generates the dist folder
+        run: |
+          cd static_server
+          npm run build
 
-      # Setup Pages
+      # Step 5: Configure Pages
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      # Upload artifact
+      # Step 6: Upload dist folder as artifact
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: static_server/dist # Correct path to the dist folder
+          path: static_server/dist
 
-      # Deploy to GitHub Pages
+      # Step 7: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
