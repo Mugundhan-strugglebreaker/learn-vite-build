@@ -36,10 +36,7 @@ jobs:
       - name: Build project
         working-directory: ./static_server
         run: npm run build
-
-      - name: Deploy to server
-        working-directory: ./static_server
-        run: npm run deploy
+        
       # Step 5: Configure Pages
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -47,6 +44,7 @@ jobs:
       # Step 6: Upload dist folder as artifact
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
+        working-directory: ./static_server
         with:
           path: ./dist
 
