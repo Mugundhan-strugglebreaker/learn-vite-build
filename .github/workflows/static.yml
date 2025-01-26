@@ -1,4 +1,4 @@
-# Simple workflow for deploying static content to GitHub Pages
+# Simple workflow for deploying static content to Pages
 name: Deploy static content to Pages
 
 on:
@@ -41,7 +41,13 @@ jobs:
       # Install dependencies
       - name: Install dependencies
         working-directory: static_server
-        run: npm ci # Install dependencies strictly based on package-lock.json
+        run: |
+          if [ ! -f package-lock.json ]; then
+            echo "package-lock.json is missing; running npm install instead of npm ci"
+            npm install
+          else
+            npm ci
+          fi
 
       # Build the project
       - name: Build the project
