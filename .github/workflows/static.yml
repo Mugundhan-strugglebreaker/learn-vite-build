@@ -31,28 +31,34 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 22
           cache: 'npm'
-      - name: Navigate to the static_server folder
-        working-directory: ./static_server
-        run:
-          echo "Switched to static_server folder"
+
+      # Install dependencies
       - name: Install dependencies
-        working-directory: ./static_server
+        working-directory: static_server
         run: npm ci # Install dependencies strictly based on package-lock.json
+
+      # Build the project
       - name: Build the project
-        working-directory: ./static_server
+        working-directory: static_server
         run: npm run build # Generates the dist folder
+
+      # Setup Pages
       - name: Setup Pages
         uses: actions/configure-pages@v5
+
+      # Upload artifact
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: './dist'
+          path: static_server/dist # Correct path to the dist folder
+
+      # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
