@@ -29,20 +29,21 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 22
+          node-version: '22.12.0'
           cache: 'npm'
 
-      # Step 3: Navigate to static_server and install dependencies
-      - name: Install dependencies
-        run: |
-          cd static_server
-          npm ci
+      # Step 3: Change directory to static_server
+      - name: Change directory to static_server
+        run: cd static_server
 
-      # Step 4: Build the project
-      - name: Build the project
-        run: |
-          cd static_server
-          npm run build
+      # Step 4: Install dependencies using npm
+      - name: Install dependencies
+        run: npm install
+
+      # Step 5: Build the project (if needed)
+      - name: Build project
+        run: npm run build  # Update this if you have a specific build command
+      
 
       # Step 5: Configure Pages
       - name: Setup Pages
@@ -52,7 +53,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: static_server/dist
+          path: ./dist
 
       # Step 7: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
