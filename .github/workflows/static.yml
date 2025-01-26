@@ -36,10 +36,16 @@ jobs:
         with:
           node-version: 22
           cache: 'npm'
-      - name: Install Dependencies
-        run: npm ci
-      - name: Build 
-        run: npm run build
+      - name: Navigate to the static_server folder
+        working-directory: ./static_server
+        run:
+          echo "Switched to static_server folder"
+      - name: Install dependencies
+        working-directory: ./static_server
+        run: npm ci # Install dependencies strictly based on package-lock.json
+      - name: Build the project
+        working-directory: ./static_server
+        run: npm run build # Generates the dist folder
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
