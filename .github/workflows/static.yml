@@ -44,7 +44,6 @@ jobs:
       # Step 6: Upload dist folder as artifact
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
-        working-directory: ./static_server
         with:
           path: ./dist
 
