@@ -18,9 +18,12 @@ environment variables
 .env.local ---> loaded in all cases , ignored by git
 .env.[mode] --> only loaded in specific mode that is dev , qa, uat and prod
 
+when we are adding environment variable we have to prefix the VITE word
 
 
+priority wise
 
-
-
+env set in scripts under package.json
+env set specific to environment mode
+env set in local .env or .env.local
 
